@@ -2,6 +2,7 @@
 #coding=utf-8
 
 import requests
+import os
 
 def get_pic(save_path,iamge_url):
   '''
@@ -10,6 +11,7 @@ def get_pic(save_path,iamge_url):
   image_url="http://static.yidianzixun.com/beauty/imgs/i_000N0FBg.jpg"
   save_path="i_000N0FBg.jpg"
   if len(save_path)==0 or len(image_url)==0: return False
+  if not os.path.exists(r"/root/get_beauty/%s"%save_path): print("creating a file %s\n"%save_path);os.system(r"touch %s"%save_path)
   response=requests.get(image_url,stream=True)
   image=response.content
   print("begining save image %s...\n"%save_path)

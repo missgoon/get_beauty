@@ -3,6 +3,6 @@
 
 from sys import path
 path.append("/root/get_beauty")
-import get_pic
+import base_func
 
-get_pic.get_pic("","")
+base_func.get_pic("","")
