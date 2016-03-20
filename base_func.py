@@ -24,3 +24,14 @@ def get_pic(save_path,iamge_url):
    return False
   finally:
     file.close
+
+def get_url(num):
+  '''
+    从根据得到的num，访问网址http://www.yidianzixun.com/api/q/?path=channel|news-list-for-channel&channel_id=u241&fields=up&cstart=1&cend=2
+    并从中得到图片的名称和地址
+  '''
+  url="http://www.yidianzixun.com/api/q/?path=channel|news-list-for-channel&channel_id=u241&fields=up&cstart=%d&cend=%d"%(num,num+1)
+  response=requests.get(url)
+  a_str=(response.content).split('"channel_image":"')
+  image_url="".join(a[1].strip("\}").strip('\"').split("\\"))
+  print(image_url)
