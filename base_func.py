@@ -51,3 +51,14 @@ def get_save_file_name_to_redis():
   for name in os.listdir(path):
     if not name.find("jpg")==-1: db.set(name,time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
   print("the jpg in redis' size is : %d"%len(db.keys("*.jpg")))
+
+def get_stock(num):
+  url=r"http://www.yidianzixun.com/api/q/?path=channel|news-list-for-keyword&display=%E8%82%A1%E7%A5%A8"+"&word_type=token&fields=docid&fields=category&fields=date&fields=image&fields=image_urls&fields=like&fields=source&fields=title&fields=url&fields=comment_count&fields=summary&fields=up&cstart=%d&cend=%d&version=999999&infinite=true"%(num,num+1)
+  response=requests.get(url)
+  print(url)
+  print((response.content).split('"url":"'))
+  a_str=(response.content).split('"url":"')[1].split('"')
+  stock_url="".join(a_str[0].strip("\}").strip('\"').split("\\"))
+  name=(response.content).split('"docid":"')[1].split('"')[0]
+  print("get stock info name:%s,url:%d"%(name,stock_url))
+  return [name,stock_url]
