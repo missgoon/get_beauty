@@ -3,6 +3,8 @@
 
 import requests
 import os
+import redis
+import time
 
 def get_pic(save_path,image_url):
   '''
@@ -38,3 +40,14 @@ def get_url(num):
   name=image_url.split("/")[-1]
   print("get image info name: %s url:%s"%(name,image_url))
   return [name,image_url]
+
+def get_save_file_name_to_redis():
+  '''
+    将/root/pictures下的图片名 保存到redis中
+  '''
+  db=redis.StrictRedis(host="139.129.45.40",port=6379,db=0)
+  db.flushall
+  path="/root/pictures"
+  for name in os.listdir(path):
+    if not name.find("jpg")==-1: db.set(name,time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
+  print("the jpg in redis' size is : %d"%len(db.keys("*.jpg")))
